@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>AutoMatch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="app">
+    <header class="top-bar">
+      <div class="brand">
+        <div class="brand-mark">A</div>
+        <div class="brand-text">
+          <span class="brand-name">AutoMatch</span>
+          <span class="brand-tag">Encuentra tu próximo auto</span>
+        </div>
+      </div>
+      <div class="budget-chip">
+        <span>Presupuesto</span>
+        <select id="budgetFilter" aria-label="Filtrar por presupuesto">
+          <option value="all">Todo</option>
+          <option value="low">Hasta $67.500.000 COP</option>
+          <option value="mid">$67.500.000 - $135.000.000 COP</option>
+          <option value="high">$135.000.000+ COP</option>
+        </select>
+      </div>
+    </header>
+
+    <main class="main-layout">
+      <section class="side-panel">
+        <div class="field">
+          <label for="usageSelect">Uso principal</label>
+          <select id="usageSelect" aria-label="Uso principal">
+            <option value="any">Cualquiera</option>
+            <option value="city">Ciudad</option>
+            <option value="family">Familiar</option>
+            <option value="adventure">Aventura</option>
+            <option value="eco">Ahorro</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="fuelSelect">Tipo de combustible</label>
+          <select id="fuelSelect" aria-label="Tipo de combustible">
+            <option value="any">Cualquiera</option>
+            <option value="gasoline">Gasolina</option>
+            <option value="diesel">Diésel</option>
+            <option value="hybrid">Híbrido</option>
+            <option value="electric">Eléctrico</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="transmissionSelect">Transmisión</label>
+          <select id="transmissionSelect" aria-label="Transmisión">
+            <option value="any">Cualquiera</option>
+            <option value="auto">Automática</option>
+            <option value="manual">Manual</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="searchInput">Modelo o marca</label>
+          <input id="searchInput" type="text" placeholder="Ej. Corolla, Kia" aria-label="Buscar por modelo o marca" />
+        </div>
+
+        <div class="field">
+          <label>Filtrar por lo más importante</label>
+          <div class="chip-row" id="priorityChips" role="tablist" aria-label="Prioridades">
+            <button data-key="totalScore" class="chip chip-active">Balance</button>
+            <button data-key="safetyScore" class="chip">Seguridad</button>
+            <button data-key="economyScore" class="chip">Economía</button>
+            <button data-key="comfortScore" class="chip">Comodidad</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="compare-panel">
+        <div class="compare-row">
+          <div class="compare-slot">
+            <label for="carSelectA">Vehículo 1</label>
+            <select id="carSelectA" aria-label="Seleccionar vehículo 1"></select>
+          </div>
+          <div class="compare-slot">
+            <label for="carSelectB">Vehículo 2</label>
+            <select id="carSelectB" aria-label="Seleccionar vehículo 2"></select>
+          </div>
+        </div>
+
+        <section class="results-section">
+          <div id="summaryRow" class="summary-row" aria-live="polite"></div>
+          <div class="cards-row">
+            <article id="cardA" class="car-card"></article>
+            <article id="cardB" class="car-card"></article>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script src="./vehicles-data.js"></script>
+  <script src="./main.js"></script>
+</body>
+</html>
+
