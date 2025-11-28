@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <title>AutoMatch</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="./styles.css" />
 </head>
+
 <body>
   <div id="app">
     <header class="top-bar">
@@ -61,6 +67,15 @@
         </div>
 
         <div class="field">
+          <label for="yearSelect">Año del modelo</label>
+          <select id="yearSelect" aria-label="Año del modelo">
+            <option value="any">Cualquiera</option>
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
+          </select>
+        </div>
+
+        <div class="field">
           <label for="searchInput">Modelo o marca</label>
           <input id="searchInput" type="text" placeholder="Ej. Corolla, Kia" aria-label="Buscar por modelo o marca" />
         </div>
@@ -95,6 +110,14 @@
             <article id="cardB" class="car-card"></article>
           </div>
         </section>
+
+        <section class="related-section">
+          <h2 class="related-title">Más opciones relacionadas</h2>
+          <div class="cards-row">
+            <article id="cardC" class="car-card car-card-compact"></article>
+            <article id="cardD" class="car-card car-card-compact"></article>
+          </div>
+        </section>
       </section>
     </main>
   </div>
@@ -102,5 +125,5 @@
   <script src="./vehicles-data.js"></script>
   <script src="./main.js"></script>
 </body>
-</html>
 
+</html>
