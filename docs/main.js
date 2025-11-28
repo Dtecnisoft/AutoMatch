@@ -25,10 +25,13 @@ const state = {
   usage: "any",
   fuel: "any",
   transmission: "any",
+  year: "any",
   search: "",
   priorityKey: "totalScore",
   carA: null,
   carB: null,
+  carC: null,
+  carD: null,
 };
 
 const els = {
@@ -36,6 +39,7 @@ const els = {
   usageSelect: document.getElementById("usageSelect"),
   fuelSelect: document.getElementById("fuelSelect"),
   transmissionSelect: document.getElementById("transmissionSelect"),
+  yearSelect: document.getElementById("yearSelect"),
   searchInput: document.getElementById("searchInput"),
   priorityChips: document.getElementById("priorityChips"),
   carSelectA: document.getElementById("carSelectA"),
@@ -43,6 +47,8 @@ const els = {
   summaryRow: document.getElementById("summaryRow"),
   cardA: document.getElementById("cardA"),
   cardB: document.getElementById("cardB"),
+  cardC: document.getElementById("cardC"),
+  cardD: document.getElementById("cardD"),
 };
 
 function formatPrice(value) {
@@ -75,6 +81,7 @@ function matchesFilters(car) {
     car.transmission !== state.transmission
   )
     return false;
+  if (state.year !== "any" && car.year.toString() !== state.year) return false;
 
   const q = state.search.trim().toLowerCase();
   if (q) {
@@ -102,7 +109,7 @@ function populateCarSelects() {
     options.forEach((car) => {
       const opt = document.createElement("option");
       opt.value = car.id;
-      opt.textContent = `${car.brand} ${car.model}`;
+      opt.textContent = `${car.brand} ${car.model} ${car.year}`;
       sel.appendChild(opt);
     });
     if (options.length === 0) {
@@ -125,6 +132,8 @@ function populateCarSelects() {
   const list = filteredCars();
   state.carA = list[0] || null;
   state.carB = list[1] || list[0] || null;
+  state.carC = list[2] || null;
+  state.carD = list[3] || null;
 
   if (state.carA) els.carSelectA.value = state.carA.id;
   if (state.carB) els.carSelectB.value = state.carB.id;
@@ -149,16 +158,16 @@ function renderSummary() {
     carA.totalScore === carB.totalScore
       ? null
       : carA.totalScore > carB.totalScore
-      ? carA
-      : carB;
+        ? carA
+        : carB;
 
   const advantageKey = state.priorityKey;
   const advWinner =
     carA[advantageKey] === carB[advantageKey]
       ? null
       : carA[advantageKey] > carB[advantageKey]
-      ? carA
-      : carB;
+        ? carA
+        : carB;
 
   const container = document.createElement("div");
   container.className = "summary-main";
@@ -166,7 +175,7 @@ function renderSummary() {
   const title = document.createElement("div");
   title.className = "summary-title";
   title.textContent = winner
-    ? `${winner.brand} ${winner.model} encaja mejor con lo que valoras`
+    ? `${winner.brand} ${winner.model} ${winner.year} encaja mejor con lo que valoras`
     : "Ambas opciones son muy similares";
 
   const sub = document.createElement("div");
@@ -222,10 +231,11 @@ function renderSummary() {
   }
 }
 
-function renderCard(targetEl, car, sideLabel) {
+function renderCard(targetEl, car, sideLabel, isCompact = false) {
   if (!car) {
-    targetEl.innerHTML =
-      '<div class="empty-card">Selecciona al menos un vehículo para ver detalles claros y comparables.</div>';
+    targetEl.innerHTML = isCompact
+      ? ''
+      : '<div class="empty-card">Selecciona al menos un vehículo para ver detalles claros y comparables.</div>';
     return;
   }
 
@@ -233,9 +243,10 @@ function renderCard(targetEl, car, sideLabel) {
   const monthlyEstimateCOP = Math.round(convertEurToCop(car.price) * 0.022);
 
   targetEl.innerHTML = `
+    <img src="${car.image}" alt="${car.brand} ${car.model}" class="car-image" />
     <div class="car-header">
       <div class="car-title">
-        <div class="car-name">${car.brand} ${car.model}</div>
+        <div class="car-name">${car.brand} ${car.model} ${car.year}</div>
         <div class="car-segment">${car.segment} • ${car.fuelLabel}</div>
       </div>
       <div class="car-price">
@@ -245,7 +256,7 @@ function renderCard(targetEl, car, sideLabel) {
     </div>
 
     <div class="badges-row">
-      <div class="badge primary">${sideLabel}</div>
+      ${sideLabel ? `<div class="badge primary">${sideLabel}</div>` : ''}
       <div class="badge">${scoreLabel}</div>
       <div class="badge">${car.transmissionLabel}</div>
       <div class="badge">${car.tagsLabel}</div>
@@ -298,6 +309,8 @@ function renderAll() {
   const labelB = "Opción B";
   renderCard(els.cardA, state.carA, labelA);
   renderCard(els.cardB, state.carB, labelB);
+  renderCard(els.cardC, state.carC, null, true);
+  renderCard(els.cardD, state.carD, null, true);
 }
 
 /* EVENT LISTENERS */
@@ -319,6 +332,11 @@ els.fuelSelect.addEventListener("change", () => {
 
 els.transmissionSelect.addEventListener("change", () => {
   state.transmission = els.transmissionSelect.value;
+  renderAll();
+});
+
+els.yearSelect.addEventListener("change", () => {
+  state.year = els.yearSelect.value;
   renderAll();
 });
 
